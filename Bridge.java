@@ -19,7 +19,7 @@ public class Bridge implements Runnable{
         //iteration count value will probably need to change to negative or something for rendering
     public Bridge(double[] locs){
         this.locArr = locs;
-        this.iterationCount = 0;
+        this.iterationCount = -1;
     }
 
     //each thread will be passed the values and run cj's code to render

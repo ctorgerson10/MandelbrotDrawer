@@ -19,9 +19,7 @@ public class Mandelbrot {
 	 * for which the sequence f(z]0), f(f(0)), etc., does not 
 	 * diverge to infinity.
 	 * @param c input constant complex number
-	 * @return either MAX_ITERATIONS if doesn't diverge, otherwise 
-	 * the point at which it passes norm(z) > 2, after which it 
-	 * cannot come back from.
+	 * @return either MAX_ITERATIONS if doesn't diverge, otherwise the point at which it passes norm(z) > 2, after which it cannot come back from.
 	 */
 	public static int testDivergence(ComplexNum c) {
 		
