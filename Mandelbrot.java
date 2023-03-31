@@ -1,47 +1,69 @@
 import java.math.BigDecimal;
 
+/**
+ * Implementation of the mandelbrot set using the ComplexNum class.
+ * @author Ethan Tenney
+ */
 public class Mandelbrot {
-
-	ComplexNum c;
+	
+	/**
+	 * Default setting for the max iterations the algorithm will test 
+	 * before calling it inside the set or not.
+	 * TODO: Have this scale with screen size for accurate rendering.
+	 */
 	final static int MAX_ITERATIONS = 80;
 	
-	public static int testResults(ComplexNum c) {
+	/**
+	 * Tests the divergence of an input complex number c in the 
+	 * function f(z) = z^2 + c when iterated from z = (0 + 0i)
+	 * for which the sequence f(z]0), f(f(0)), etc., does not 
+	 * diverge to infinity.
+	 * @param c input constant complex number
+	 * @return either MAX_ITERATIONS if doesn't diverge, otherwise 
+	 * the point at which it passes norm(z) > 2, after which it 
+	 * cannot come back from.
+	 */
+	public static int testDivergence(ComplexNum c) {
 		
-		return testResults (c, MAX_ITERATIONS);
+		return testDivergence (c, MAX_ITERATIONS);
 		
 	}
 	
-	public static int testResults(ComplexNum c, int iterations) {
+	/**
+	 * Tests the divergence, specifying the number of iterations 
+	 * it should try before giving up.
+	 * @param c input constant complex number
+	 * @param iterations amount of iterations it should try before 
+	 * giving up.
+	 * @return either MAX_ITERATIONS if doesn't diverge, otherwise 
+	 * the point at which it passes norm(z) > 2, after which it 
+	 * cannot come back from.
+	 */
+	public static int testDivergence(ComplexNum c, int iterations) {
 		
-		ComplexNum z = new ComplexNum(0,0);
+		ComplexNum z = new ComplexNum(0,0); //first iteration always starts with z= (0 + 0i)
 		
 		int i = 0;
 		while (z.magnitude().compareTo(new BigDecimal("2")) < 0 && i < iterations) {
-			z = z.pow(2);
+			z = z.pow2();
 			z = z.add(c);
 			i++;
 		}
 		
 		return i;
-//		for (int i = 0; i < iterations; i++) {
-//			z = z.pow(2);
-//			z = z.add(c);
-//			if(z.magnitude().compareTo(new BigDecimal(2)) < 0) {
-//				reachInfinity = i;
-//				return reachInfinity;
-//			}
-//			if(i %10 == 0) {
-//				System.out.print(".");
-//			}
-//		}
 	}
 	
+	/**
+	 * Prints to console are rough approximation of the Mandelbrot set 
+	 * using "*" for being in the set, and " " for being outside it.
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		
 		for (double y = 1; y >= -1 ; y-=0.05) {
 			for (double x = -2; x <= 0.5; x+=0.025) {
 				ComplexNum c = new ComplexNum(x, y);
-				if(testResults(c) == MAX_ITERATIONS) {
+				if(testDivergence(c) == MAX_ITERATIONS) {
 					System.out.print("*");
 				} else {
 					System.out.print(" ");
@@ -55,7 +77,7 @@ public class Mandelbrot {
 }
 
 /*
-
+Sample Output:
                                                                                 *                    
                                                                                                      
                                                                                                      
