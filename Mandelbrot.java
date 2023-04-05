@@ -1,10 +1,30 @@
 import java.math.BigDecimal;
+import java.awt.image.BufferedImage;
 
 /**
  * Implementation of the mandelbrot set using the ComplexNum class.
  * @author Ethan Tenney
  */
 public class Mandelbrot {
+
+	// width and height of the window
+	static final int WIDTH = 1000;
+	static final int HEIGHT = 1000;
+	static final int NUM_FRAMES = 100;
+
+	// output image variables
+	static BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+	static int[] pixelColors = new int[WIDTH * HEIGHT];
+	static FractalDrawer fd = new FractalDrawer();
+
+	// starting coordinates
+	static BigDecimal STARTING_MIN_X = new BigDecimal(-2);
+	static BigDecimal STARTING_MAX_X = new BigDecimal(2);
+	static BigDecimal STARTING_MIN_Y = new BigDecimal(-2);
+	static BigDecimal STARTING_MAX_Y = new BigDecimal(2);
+
+	// ending coordinates
+	// blah blah blah
 	
 	/**
 	 * Default setting for the max iterations the algorithm will test 
@@ -51,17 +71,22 @@ public class Mandelbrot {
 		return i;
 	}
 	
+
+	// TODO: change for loop bounds to WIDTH and HEIGHT and uncomment color picking code
+	// TODO: incrementally decrease bounds (increase zoom), and write output to file.
 	/**
 	 * Prints to console are rough approximation of the Mandelbrot set 
 	 * using "*" for being in the set, and " " for being outside it.
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
 		for (double y = 1; y >= -1 ; y-=0.05) {
 			for (double x = -2; x <= 0.5; x+=0.025) {
 				ComplexNum c = new ComplexNum(x, y);
-				if(testDivergence(c) == MAX_ITERATIONS) {
+				int n = testDivergence(c);
+				// int color = fd.getColor(n, MAX_ITERATIONS);
+				// pixelColors[y + x * WIDTH] = color;
+				if(n == MAX_ITERATIONS) {
 					System.out.print("*");
 				} else {
 					System.out.print(" ");
