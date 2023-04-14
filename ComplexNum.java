@@ -14,7 +14,6 @@ public class ComplexNum {
 	/**
 	 * Value used for default rounding of the ComplexNum when being constructed. 
 	 * Uses Java MathContext to pass to BigDecimal.round
-	 * TODO: Scale this value with the screen size in order to minimize latency
 	 */
 	final static MathContext DEFAULT_ROUNDING = new MathContext(10);
 	
