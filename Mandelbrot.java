@@ -1,6 +1,5 @@
 import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
 
 import javax.imageio.ImageIO;
 
@@ -19,31 +18,30 @@ public class Mandelbrot {
 	static FractalDrawer fd = new FractalDrawer(WIDTH, HEIGHT, NUM_FRAMES);
 
 	// starting MIN and MAX coordinate values -- [-2, 2] encapsulates the full mandelbrot set
-	static BigDecimal STARTING_MIN_X = new BigDecimal(-2);
-	static BigDecimal STARTING_MAX_X = new BigDecimal(2);
-	static BigDecimal STARTING_MIN_Y = new BigDecimal(-2);
-	static BigDecimal STARTING_MAX_Y = new BigDecimal(2);
+	static double STARTING_MIN_X = -2;
+	static double STARTING_MAX_X =  2;
+	static double STARTING_MIN_Y = -2;
+	static double STARTING_MAX_Y =  2;
 
 	// ending MIN and MAX coordinate values -- I took these values from a stackoverflow thread
 	// of interesting zoom locations on the mandelbrot set.
-	static BigDecimal ENDING_MIN_X = new BigDecimal(-1.2576470439078538);
-	static BigDecimal ENDING_MIN_Y = new BigDecimal(0.3780652779236957);
-	static BigDecimal ENDING_MAX_X = new BigDecimal(-1.2576470439074896);
-	static BigDecimal ENDING_MAX_Y = new BigDecimal(0.3780652779240597);
+	static double ENDING_MIN_X = -1.2576470439078538;
+	static double ENDING_MIN_Y = 0.3780652779236957;
+	static double ENDING_MAX_X = -1.2576470439074896;
+	static double ENDING_MAX_Y = 0.3780652779240597;
 
 	// increment values -- i.e. how fast we are zooming in
 	// this scales with how many frames we want to generate
-	static BigDecimal MIN_X_INC = ENDING_MIN_X.subtract(STARTING_MIN_X).divide(new BigDecimal(NUM_FRAMES));
-	static BigDecimal MIN_Y_INC = ENDING_MIN_Y.subtract(STARTING_MIN_Y).divide(new BigDecimal(NUM_FRAMES));
-	static BigDecimal MAX_X_INC = ENDING_MAX_X.subtract(STARTING_MAX_X).divide(new BigDecimal(NUM_FRAMES));
-	static BigDecimal MAX_Y_INC = ENDING_MAX_Y.subtract(STARTING_MAX_Y).divide(new BigDecimal(NUM_FRAMES));
+	static double MIN_X_INC = (ENDING_MIN_X - STARTING_MIN_X) / NUM_FRAMES;
+	static double MIN_Y_INC = (ENDING_MIN_Y - STARTING_MIN_Y) / NUM_FRAMES;
+	static double MAX_X_INC = (ENDING_MAX_X - STARTING_MAX_X) / NUM_FRAMES;
+	static double MAX_Y_INC = (ENDING_MAX_Y - STARTING_MAX_Y) / NUM_FRAMES;
 
 	/**
 	 * Default setting for the max iterations the algorithm will test 
 	 * before calling it inside the set or not.
 	 */
 	final static int MAX_ITERATIONS = 1000;
-	final static int THRESHOLD = 10;
 	
 	/**
 	 * Tests the divergence of an input complex number c in the 
@@ -53,9 +51,9 @@ public class Mandelbrot {
 	 * @param c input constant complex number
 	 * @return either MAX_ITERATIONS if doesn't diverge, otherwise the point at which it passes norm(z) > 2, after which it cannot come back from.
 	 */
-	public static int testDivergence(ComplexNum c) {
+	public static int testDivergence(DoubleComplexNum c) {
 		
-		return testDivergence (c, MAX_ITERATIONS);
+		return testDivergence(c, MAX_ITERATIONS);
 		
 	}
 	
@@ -69,12 +67,12 @@ public class Mandelbrot {
 	 * the point at which it passes norm(z) > 2, after which it 
 	 * cannot come back from.
 	 */
-	public static int testDivergence(ComplexNum c, int iterations) {
+	public static int testDivergence(DoubleComplexNum c, int iterations) {
 		
-		ComplexNum z = new ComplexNum(0,0); //first iteration always starts with z= (0 + 0i)
+		DoubleComplexNum z = new DoubleComplexNum(0,0); //first iteration always starts with z= (0 + 0i)
 		
 		int i = 0;
-		while (z.magnitude().compareTo(new BigDecimal("2")) < 0 && i < iterations) {
+		while (z.magnitude() < 2 && i < iterations) {
 			z = z.pow2();
 			z = z.add(c);
 			i++;
@@ -83,31 +81,26 @@ public class Mandelbrot {
 		return i;
 	}
 
-	public static BigDecimal mapToCoordinatePlane(int input, BigDecimal minOutput, BigDecimal maxOutput) {
-
-		BigDecimal i = new BigDecimal(input);
-		BigDecimal width = new BigDecimal(WIDTH);
-
-		return i.multiply(maxOutput.subtract(minOutput)).divide(width.add(minOutput), ComplexNum.DEFAULT_ROUNDING);
+	public static double mapToCoordinatePlane(int input, double minOutput, double maxOutput) {
+		return (input * (maxOutput - minOutput)) / WIDTH + minOutput;
 	}
 
 	/**
 	 * Calculate mandelbrot set and set image pixels for output
 	 */
 	public static void drawFrames() {
-		int frame_iter = 0;
-		while (
-			STARTING_MIN_X.compareTo(ENDING_MIN_X) == -1 ||
-			STARTING_MIN_Y.compareTo(ENDING_MIN_Y) == -1 ||
-			STARTING_MAX_X.compareTo(ENDING_MAX_X) == 1  ||
-			STARTING_MAX_Y.compareTo(ENDING_MAX_Y) == 1  ){
+		int frameCount = 0;
+		while (STARTING_MIN_X < ENDING_MIN_X ||
+			   STARTING_MIN_Y < ENDING_MIN_Y ||
+			   STARTING_MAX_X > ENDING_MAX_X ||
+			   STARTING_MAX_Y > ENDING_MAX_Y ){
 				
 				for (int x = 0; x < WIDTH; x++) {
 					for (int y = 0; y < HEIGHT; y++) {
 						// map pixel x/y values to values inside [-2, 2]
-						BigDecimal real = mapToCoordinatePlane(x, STARTING_MIN_X, STARTING_MAX_X);
-						BigDecimal imaginary = mapToCoordinatePlane(y, STARTING_MIN_Y, STARTING_MAX_Y);
-						ComplexNum c = new ComplexNum(real, imaginary);
+						double real = mapToCoordinatePlane(x, STARTING_MIN_X, STARTING_MAX_X);
+						double imaginary = mapToCoordinatePlane(y, STARTING_MIN_Y, STARTING_MAX_Y);
+						DoubleComplexNum c = new DoubleComplexNum(real, imaginary);
 						int n = testDivergence(c);
 						int color = fd.getColor(n, MAX_ITERATIONS);
 						fd.pixelColors[y + x * WIDTH] = color;
@@ -118,22 +111,28 @@ public class Mandelbrot {
 				fd.image.setRGB(0, 0, WIDTH, HEIGHT, fd.pixelColors, 0, WIDTH);
 
 				// save image file
-				String fileName = "images/frame" + frame_iter + ".png";
+				String fileName = "images/frame" + String.format("%03d", (frameCount+1)) + ".png";
 				File f = new File(fileName);
 				try {
 					ImageIO.write(fd.image, "png", f);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				System.out.println("Saved frame " + frame_iter + " as " + fileName);
+				System.out.println("Saved frame " + (frameCount+1) + " as " + fileName);
 
 				// increment bounds
-				STARTING_MIN_X = STARTING_MIN_X.add(MIN_X_INC);
-				STARTING_MIN_Y = STARTING_MIN_Y.add(MIN_Y_INC);
-				STARTING_MAX_X = STARTING_MAX_X.add(MAX_X_INC);
-				STARTING_MAX_Y = STARTING_MAX_Y.add(MAX_Y_INC);
+				STARTING_MIN_X = STARTING_MIN_X + MIN_X_INC;
+				STARTING_MIN_Y = STARTING_MIN_Y + MIN_Y_INC;
+				STARTING_MAX_X = STARTING_MAX_X + MAX_X_INC;
+				STARTING_MAX_Y = STARTING_MAX_Y + MAX_Y_INC;
 
-				frame_iter++;
+				// update the increment values
+				MIN_X_INC *= 0.9;
+				MIN_Y_INC *= 0.9;
+				MAX_X_INC *= 0.9;
+				MAX_Y_INC *= 0.9;
+
+				frameCount++;
 			}
 	}
 
@@ -147,7 +146,7 @@ public class Mandelbrot {
 		// I kept this code because I think it's cute
 		for (double y = 1; y >= -1 ; y-=0.05) {
 			for (double x = -2; x <= 0.5; x+=0.025) {
-				ComplexNum c = new ComplexNum(x, y);
+				DoubleComplexNum c = new DoubleComplexNum(x, y);
 				int n = testDivergence(c);
 				// int color = fd.getColor(n, MAX_ITERATIONS);
 				// pixelColors[y + x * WIDTH] = color;

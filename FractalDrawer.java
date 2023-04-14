@@ -4,7 +4,7 @@ public class FractalDrawer {
 
     // Color variables
     public int[] colors;
-    public static final int black = 0;
+    public int black;
 
     // Image output variables
     public BufferedImage image;
@@ -52,7 +52,7 @@ public class FractalDrawer {
 	/**
      * Map colors to indices in the color map, first converting them to integer values.
      * Color values are the default gradient colors of Ultra Fractal, a fractal viewing program.
-     * I took the colors and getColor() function from StackOverflow:
+     * I took the colors from StackOverflow:
      * https://stackoverflow.com/questions/16500656/which-color-gradient-is-used-to-color-mandelbrot-in-wikipedia
      * 
      */
@@ -73,7 +73,48 @@ public class FractalDrawer {
         this.colors[13] = RGBtoInt(204, 128, 0);
         this.colors[14] = RGBtoInt(153, 87, 0);
         this.colors[15] = RGBtoInt(106, 52, 3);
+        this.black = RGBtoInt(0, 0, 0);
     }
 
-    
+    // color palettes
+
+    //ffmpeg -framerate 24 -i frame%03d.png -pix_fmt yuv420p -c:v libx264 -crf 1 -c:a copy new.mp4
+
+    /*
+    RGB(54, 28, 227)
+    RGB(128, 0, 213)
+    RGB(163, 0, 181)
+    RGB(187, 0, 159)
+    RGB(207, 0, 143)
+    RGB(227, 0, 127)
+    RGB(247, 0, 111)
+    RGB(255, 0, 89)
+    RGB(255, 60, 75)
+    RGB(255, 91, 56)
+    RGB(255, 116, 30)
+    RGB(255, 140, 0)
+    RGB(248, 165, 0)
+    RGB(235, 187, 0)
+    RGB(219, 208, 0)
+    RGB(201, 227, 28)
+    */
+
+    /*
+    RGB(66, 30, 15);
+    RGB(25, 7, 26);
+    RGB(9, 1, 47);
+    RGB(4, 4, 73);
+    RGB(0, 7, 100);
+    RGB(12, 44, 138);
+    RGB(24, 82, 177);
+    RGB(57, 125, 209);
+    RGB(134, 181, 229);
+    RGB(211, 236, 248);
+    RGB(241, 233, 191);
+    RGB(248, 201, 95);
+    RGB(255, 170, 0);
+    RGB(204, 128, 0);
+    RGB(153, 87, 0);
+    RGB(106, 52, 3);
+    */
 }
