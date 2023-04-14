@@ -95,11 +95,11 @@ public class Mandelbrot {
 			   STARTING_MAX_X > ENDING_MAX_X ||
 			   STARTING_MAX_Y > ENDING_MAX_Y ){
 				
-				for (int x = 0; x < WIDTH; x++) {
-					for (int y = 0; y < HEIGHT; y++) {
+				for (int x = 0; x < WIDTH; x++) { // rows
+					for (int y = 0; y < HEIGHT; y++) { // columns
 						// map pixel x/y values to values inside [-2, 2]
-						double real = mapToCoordinatePlane(x, STARTING_MIN_X, STARTING_MAX_X);
-						double imaginary = mapToCoordinatePlane(y, STARTING_MIN_Y, STARTING_MAX_Y);
+						double real = mapToCoordinatePlane(y, STARTING_MIN_X, STARTING_MAX_X);
+						double imaginary = mapToCoordinatePlane(x, STARTING_MIN_Y, STARTING_MAX_Y);
 						DoubleComplexNum c = new DoubleComplexNum(real, imaginary);
 						int n = testDivergence(c);
 						int color = fd.getColor(n, MAX_ITERATIONS);
@@ -210,3 +210,13 @@ Sample Output:
 
 
  */
+
+// some zoom coordinates
+/*
+ -1.2576470439078538 0.3780652779236957, -1.2576470439074896 0.3780652779240597
+ -0.6002735730728121 -0.6646192892692977 -0.6002735278513613 -0.6646192440478469
+ 0.27448947852666156 -0.006315217712621591 0.2744894785266986 -0.006315217712584573
+ 0.36989570933793936 0.6714366753122559, 0.36989570933811894 0.6714366753124356
+ -1.469375574129762 -0.011646337485088934, -1.4693755741062213 -0.01164633746154828
+ -0.7730988756640723 -0.126912260064924, -0.7730988756639694 -0.12691226006482104
+*/

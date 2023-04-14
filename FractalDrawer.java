@@ -57,28 +57,29 @@ public class FractalDrawer {
      * 
      */
     private void initializeColorMap() {
-        this.colors[0]  = RGBtoInt(66, 30, 15);
-        this.colors[1]  = RGBtoInt(25, 7, 26);
-        this.colors[2]  = RGBtoInt(9, 1, 47);
-        this.colors[3]  = RGBtoInt(4, 4, 73);
-        this.colors[4]  = RGBtoInt(0, 7, 100);
-        this.colors[5]  = RGBtoInt(12, 44, 138);
-        this.colors[6]  = RGBtoInt(24, 82, 177);
-        this.colors[7]  = RGBtoInt(57, 125, 209);
-        this.colors[8]  = RGBtoInt(134, 181, 229);
-        this.colors[9]  = RGBtoInt(211, 236, 248);
-        this.colors[10] = RGBtoInt(241, 233, 191);
-        this.colors[11] = RGBtoInt(248, 201, 95);
-        this.colors[12] = RGBtoInt(255, 170, 0);
-        this.colors[13] = RGBtoInt(204, 128, 0);
-        this.colors[14] = RGBtoInt(153, 87, 0);
-        this.colors[15] = RGBtoInt(106, 52, 3);
+        this.colors[0]  = RGBtoInt(2, 3, 105);
+        this.colors[1]  = RGBtoInt(35, 34, 113);
+        this.colors[2]  = RGBtoInt(68, 66, 122);
+        this.colors[3]  = RGBtoInt(101, 98, 131);
+        this.colors[4]  = RGBtoInt(134, 129, 140);
+        this.colors[5]  = RGBtoInt(167, 161, 149);
+        this.colors[6]  = RGBtoInt(200, 193, 157);
+        this.colors[7]  = RGBtoInt(233, 225, 166);
+        this.colors[8]  = RGBtoInt(240, 231, 159);
+        this.colors[9]  = RGBtoInt(221, 213, 137);
+        this.colors[10] = RGBtoInt(201, 195, 114);
+        this.colors[11] = RGBtoInt(182, 176, 92);
+        this.colors[12] = RGBtoInt(163, 158, 69);
+        this.colors[13] = RGBtoInt(143, 139, 47);
+        this.colors[14] = RGBtoInt(124, 121, 24);
+        this.colors[15] = RGBtoInt(105, 103, 2);
         this.black = RGBtoInt(0, 0, 0);
     }
 
     // color palettes
 
-    //ffmpeg -framerate 24 -i frame%03d.png -pix_fmt yuv420p -c:v libx264 -crf 1 -c:a copy new.mp4
+    // ffmpeg write to mp4
+    // ffmpeg -framerate 24 -i frame%03d.png -pix_fmt yuv420p -c:v libx264 -crf 1 -c:a copy new.mp4
 
     /*
     RGB(54, 28, 227)
@@ -116,5 +117,25 @@ public class FractalDrawer {
     RGB(204, 128, 0);
     RGB(153, 87, 0);
     RGB(106, 52, 3);
+    */
+
+    // this one kinda ugly
+    /*
+    RGB(2, 3, 105)
+    RGB(35, 34, 113)
+    RGB(68, 66, 122)
+    RGB(101, 98, 131)
+    RGB(134, 129, 140)
+    RGB(167, 161, 149)
+    RGB(200, 193, 157)
+    RGB(233, 225, 166)
+    RGB(240, 231, 159)
+    RGB(221, 213, 137)
+    RGB(201, 195, 114)
+    RGB(182, 176, 92)
+    RGB(163, 158, 69)
+    RGB(143, 139, 47)
+    RGB(124, 121, 24)
+    RGB(105, 103, 2)
     */
 }
